@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<!-- 开启驼峰自动映射 
+		对象user{userId, UserName, userAddr}
+		表 tb_user(user_id, user_name,user_addr)
+		如果按照上述的配置, 则使用RestType不能自动映射
+		需要使用restMap(必须手动映射)
+		
+		驼峰映射规则:采用restType将字段中的_自动取出,
+		且之后的首字母大写.转化完成后, 实现对象映射.
+		
+		-->
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+		<!-- 二级缓存的总开关，被redis替代 mybatis缓存分为两级 
+		
+		一级缓存 (单用户)
+		sqlSession__將數據庫連接進行擴展(實現ORM)
+		在sqlSession內實現數據共享,查询出来的数据后面同样查询都访问同样的查询结果
+		二级缓存 (多个用户)
+		只要由一个sqlSessionFactory所生产的sqlSession
+		那么实现数据共享
+		
+		因为Mybatis自身的二级缓存性能较低, 实际开发中不用.
+		实际开发中使用redis
+		
+		-->
+		<setting name="cacheEnabled" value="false" />
+	</settings>
+
+</configuration>
