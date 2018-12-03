@@ -11,6 +11,16 @@ public interface ItemService {
 
 	public String findItemCatNameById(Long itemId);
 
+	public void saveItem(Item item);
+
+	public void updateItem(Item item);
+
+	public void updateState(Long[] ids, int status);
+
+	public void deleteItems(Long[] ids);
+
+
+	
 	
 	
 }

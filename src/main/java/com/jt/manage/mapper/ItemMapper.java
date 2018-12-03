@@ -5,10 +5,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import com.jt.common.mapper.SysMapper;
 import com.jt.common.po.Item;
+import com.jt.manage.vo.ItemCat;
 
 
-public interface ItemMapper {
+public interface ItemMapper extends SysMapper<Item>{
 	
 	
 	/**
@@ -32,4 +34,8 @@ public interface ItemMapper {
 	String findItemCatNameById(@Param("itemId") Long itemId);
 	
 	
+	
+	void updateStatus(@Param("ids") Long[] ids , @Param("status")int status);
+	
+	//void deleteitems(@Param("ids") Long[] ids);
 }

@@ -14,5 +14,23 @@
        order by updated desc
        limit #{start},#{rows}
     </select>
+    
+    <!-- description 
+    collection = 取值方式
+    1.Map   写key值
+    2.数组[] array
+    3.List  list
+    
+    -->
+<update id="updateStatus">
+        update tb_item
+        set status=#{status}, updated=now()
+        where id in (
+        <foreach collection="ids" item="id" separator=",">
+        #{id}
+        </foreach>
+        )
+</update>
+    
 	
 </mapper>

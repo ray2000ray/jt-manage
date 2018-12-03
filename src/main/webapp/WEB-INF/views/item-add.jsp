@@ -103,7 +103,7 @@
 		paramJson = JSON.stringify(paramJson);//将对象转化为json字符串
 		
 		$("#itemAddForm [name=itemParams]").val(paramJson);
-		
+		//表单序列化 参数?key=value&key2=value2
 		$.post("/item/save",$("#itemAddForm").serialize(), function(data){
 			if(data.status == 200){
 				$.messager.alert('提示','新增商品成功!');

@@ -1,5 +1,10 @@
 package com.jt.manage.service.impl;
 
+
+
+
+
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +24,11 @@ public class ItemServiceImpl implements ItemService {
 	@Override
 	public EasyUIResult findItemByPage(Integer page, Integer rows) {
 		//1.获取总商品数目
-        int total = itemMapper.findItemCount();
+       // int total = itemMapper.findItemCount();
+		//使用通用接口查询商品数量
+		//Item i = new Item();
+		int total = itemMapper.selectCount(null);
+		
 		//2.获取商品列表信息
         /*select * from tb_item LIMIT 0,20 第一页
          * select * from tb_item LIMIT 20,20 第二页
@@ -43,8 +52,43 @@ public class ItemServiceImpl implements ItemService {
 		return itemName; 
 	}
 
+	@Override
+	public void saveItem(Item item) {
 
-	
-	
+		//1. 补全数据
+		item.setStatus(1);
+		item.setCreated(new Date());
+		item.setUpdated(item.getCreated());
+		itemMapper.insert(item);
+		
+	}
+
+	@Override
+	public void updateItem(Item item) {
+		// 添加时间
+		item.setUpdated(new Date());
+		itemMapper.updateByPrimaryKeySelective(item);
+		
+	}
+
+	@Override
+	public void updateState(Long[] ids, int status ) {
+		// TODO Auto-generated method stub
+		//效率太低
+//		for (Long itemId : ids) {
+//			Item item = new Item();
+//			item.setId(id);
+//		}
+		itemMapper.updateStatus(ids, status);
+		
+		
+	}
+
+	@Override
+	public void deleteItems(Long[] ids) {
+		itemMapper.deleteByIDS(ids);
+		
+	}
+
 	
 }
