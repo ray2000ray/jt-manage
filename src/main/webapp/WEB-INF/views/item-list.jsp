@@ -73,9 +73,7 @@
 													data);
 
 											// 加载商品描述
-											$
-													.getJSON(
-															'/item/query/item/desc/'
+											$.getJSON('/item/query/item/desc/'
 																	+ data.id,
 															function(_data) {
 																if (_data.status == 200) {
@@ -86,9 +84,7 @@
 															});
 
 											//加载商品规格
-											$
-													.getJSON(
-															'/item/param/item/query/'
+											$.getJSON('/item/param/item/query/'
 																	+ data.id,
 															function(_data) {
 																if (_data
@@ -130,11 +126,7 @@
 																	}
 																	html += "</ul>";
 																	$(
-																			"#itemeEditForm .params td")
-																			.eq(
-																					1)
-																			.html(
-																					html);
+																			"#itemeEditForm .params td").eq(1).html(html);
 																}
 															});
 

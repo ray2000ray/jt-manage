@@ -37,5 +37,4 @@ public interface ItemMapper extends SysMapper<Item>{
 	
 	void updateStatus(@Param("ids") Long[] ids , @Param("status")int status);
 	
-	//void deleteitems(@Param("ids") Long[] ids);
 }

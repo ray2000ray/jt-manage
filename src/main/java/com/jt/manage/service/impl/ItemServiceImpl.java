@@ -1,9 +1,6 @@
 package com.jt.manage.service.impl;
 
 
-
-
-
 import java.util.Date;
 import java.util.List;
 
@@ -11,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.jt.common.po.Item;
+import com.jt.common.po.ItemDesc;
 import com.jt.common.vo.EasyUIResult;
+import com.jt.manage.mapper.ItemDescMapper;
 import com.jt.manage.mapper.ItemMapper;
 import com.jt.manage.service.ItemService;
 
@@ -20,6 +19,8 @@ public class ItemServiceImpl implements ItemService {
 	
 	@Autowired
 	ItemMapper itemMapper;
+	@Autowired
+	ItemDescMapper itemDescMapper;
 
 	@Override
 	public EasyUIResult findItemByPage(Integer page, Integer rows) {
@@ -53,21 +54,33 @@ public class ItemServiceImpl implements ItemService {
 	}
 
 	@Override
-	public void saveItem(Item item) {
+	public void saveItem(Item item, String desc) {
 
 		//1. 补全数据
+		//同时入库两张表
 		item.setStatus(1);
 		item.setCreated(new Date());
 		item.setUpdated(item.getCreated());
+		//插入新纪录, 更新为最新id
 		itemMapper.insert(item);
 		
+		//因为不是主键, 不能保证数据是同一个Item itemDB = 
+		ItemDesc itemDesc = new ItemDesc();
+		itemDesc.setItemId(item.getId());
+		//
+		itemDesc.setItemDesc(desc);
+		itemDescMapper.insert(itemDesc);
 	}
 
 	@Override
-	public void updateItem(Item item) {
+	public void updateItem(Item item,String desc) {
 		// 添加时间
 		item.setUpdated(new Date());
 		itemMapper.updateByPrimaryKeySelective(item);
+		ItemDesc itemDesc = new ItemDesc();
+		itemDesc.setItemId(item.getId());
+		itemDesc.setItemDesc(desc);
+		itemDescMapper.updateByPrimaryKey(itemDesc);
 		
 	}
 
@@ -88,6 +101,12 @@ public class ItemServiceImpl implements ItemService {
 	public void deleteItems(Long[] ids) {
 		itemMapper.deleteByIDS(ids);
 		
+	}
+
+	@Override
+	public ItemDesc findItemById(Long itemId) {
+		ItemDesc itemDesc = itemDescMapper.selectByPrimaryKey(itemId);
+		return itemDesc;
 	}
 
 	

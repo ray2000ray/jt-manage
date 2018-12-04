@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.jt.common.po.Item;
+import com.jt.common.po.ItemDesc;
 import com.jt.common.vo.EasyUIResult;
 import com.jt.common.vo.SysResult;
 import com.jt.manage.service.ItemService;
@@ -40,15 +41,29 @@ public class ItemController {
 	
 	@RequestMapping("/save")
 	@ResponseBody
-	public SysResult saveItem(Item item	) {
+	public SysResult saveItem(Item item, String desc) {
 		System.out.println("saveItem()<<<");
 		try {
-		itemService.saveItem(item);
+		itemService.saveItem(item, desc);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return SysResult.oK();	
 	}
+	//根据商品ID查询商品详情
+	@RequestMapping("/query/item/desc/{itemId}")
+	@ResponseBody
+	public SysResult findItemDescById(@PathVariable Long itemId) {
+		System.out.println("findItemDescById()<<<");
+		try {
+			ItemDesc itemDesc = itemService.findItemById(itemId);
+			return SysResult.oK(itemDesc);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return SysResult.build(201, "查询失败!");
+	}
+	
 	
 	//实现商品下架
 	@RequestMapping("/{moduleName}")
@@ -76,10 +91,10 @@ public class ItemController {
 	//编辑商品
 	@RequestMapping("/update")
 	@ResponseBody
-	public SysResult updateItem(Item item) {
+	public SysResult updateItem(Item item, String desc) {
 		System.out.println("updateItem()<<<");
 		try {
-		itemService.updateItem(item);
+		itemService.updateItem(item, desc);
 		return SysResult.oK();
 		} catch (Exception e) {
 			e.printStackTrace();
