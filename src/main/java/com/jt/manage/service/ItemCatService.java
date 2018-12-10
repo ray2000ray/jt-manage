@@ -13,5 +13,8 @@ public interface ItemCatService {
 	 * @return
 	 */
 	List<EasyUITree> findItemCatList(Long parentId);	
+
+	List<EasyUITree> findCacheList(Long parentId);
+		
 	
 }

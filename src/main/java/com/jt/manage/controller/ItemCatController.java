@@ -26,13 +26,12 @@ public class ItemCatController {
 	//required:设置是否必须传入此参数
 	@RequestMapping("list")
 	@ResponseBody
-	public List<EasyUITree> findItemCatByParentId(@RequestParam(value="id", defaultValue="0") Long parentId){
+	public List<EasyUITree> findItemCartListByParentId(@RequestParam(value="id", defaultValue="0") Long parentId){
 		//1.实现查询一级商品分类的信息
 			//Long parentId = 0L;
 		System.out.println("findItemCatByParentId<<<<<parentId:"+parentId);
-			return itemCatService.findItemCatList(parentId);
+			return itemCatService.findCacheList(parentId);
 	}
-
 	
 	
 }

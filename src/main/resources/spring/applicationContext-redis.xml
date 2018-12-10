@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd 
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+	<!-- 引入外部配置文件 -->
+	<context:property-placeholder
+		location="classpath:/properties/*.properties" />
+	<!-- spring整合redis -->
+	<!-- <bean id="jedis" class="redis.clients.jedis.Jedis"> <constructor-arg 
+		name="host" value="${redis.host}"></constructor-arg> <constructor-arg name="port" 
+		value="${redis.port}"></constructor-arg> </bean> -->
+
+	<!-- 1.定义bean标签 -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxTotal" value="${redis.MaxTotal}" />
+		<property name="maxIdle" value="${redis.MaxIdle}" />
+		<property name="minIdle" value="${redis.MinIdle}" />
+	</bean>
+
+	<!-- 2.定义分片节点对象 -->
+	<bean name="info1" class="redis.clients.jedis.JedisShardInfo">
+		<constructor-arg name="host" value="${redis.host}"></constructor-arg>
+		<constructor-arg name="port" value="${redis.port1}"></constructor-arg>
+	</bean>
+
+	<bean name="info2" class="redis.clients.jedis.JedisShardInfo">
+		<constructor-arg name="host" value="${redis.host}"></constructor-arg>
+		<constructor-arg name="port" value="${redis.port2}"></constructor-arg>
+	</bean>
+
+	<bean name="info3" class="redis.clients.jedis.JedisShardInfo">
+		<constructor-arg name="host" value="${redis.host}"></constructor-arg>
+		<constructor-arg name="port" value="${redis.port3}"></constructor-arg>
+	</bean>
+
+	<!-- 3.定义分片的池对象 -->
+	<bean id="shardConfigPool"
+		class="redis.clients.jedis.ShardedJedisPool">
+		<constructor-arg name="poolConfig" ref="poolConfig"></constructor-arg>
+		<constructor-arg name="shards">
+			<list>
+				<ref bean="info1" />
+				<ref bean="info2" />
+				<ref bean="info3" />
+			</list>
+		</constructor-arg>
+	</bean>
+
+</beans>
+
