@@ -8,11 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jt.common.service.RedisService;
 import com.jt.manage.mapper.ItemCatMapper;
 import com.jt.manage.service.ItemCatService;
 import com.jt.manage.vo.EasyUITree;
 import com.jt.manage.vo.ItemCat;
+
+import redis.clients.jedis.JedisCluster;
 
 @Service
 public class ItemCatServiceImpl implements ItemCatService{
@@ -23,7 +24,8 @@ public class ItemCatServiceImpl implements ItemCatService{
 	@Autowired
 	//private Jedis jedis;
 	//private ShardedJedis shardedJedis;
-	private RedisService redisService;
+	//private RedisService redisService;
+	private JedisCluster jedisCluster;
 	
 	
 	//有线程安全问题吗? 操作基本类型时会有线程安全性问题, 但是调用对象时不会, 对象是单例的, 操作的时对象的方法.
@@ -58,7 +60,7 @@ public class ItemCatServiceImpl implements ItemCatService{
 		String key = "ITEM_CAT_" + parentId;
 		
 		//String resultJSON = jedis.get(key);
-		String resultJSON = redisService.get(key);
+		String resultJSON = jedisCluster.get(key);
 		List<EasyUITree> treeList =new ArrayList<>();
 		try {
 			if (StringUtils.isEmpty(resultJSON)) {
@@ -66,7 +68,8 @@ public class ItemCatServiceImpl implements ItemCatService{
 				treeList = findItemCatList(parentId);
 				
 				String jsonData = objectMapper.writeValueAsString(treeList);
-				redisService.set(key, jsonData);
+				//redisService.set(key, jsonData, 20);
+				jedisCluster.setex(key, 20, jsonData);
 				System.out.println("First time searching ");
 			}else {
 				//缓存的数据不为空; 将json数据转化为对象
