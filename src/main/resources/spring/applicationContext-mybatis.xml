@@ -29,7 +29,7 @@
 	</bean>
 	<!-- 2. 配置Mapper接口代理对象 -->
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="com.jt.manage.mapper" />
+		<property name="basePackage" value="com.jt.manage.mapper" /> 
 	</bean>
 
 

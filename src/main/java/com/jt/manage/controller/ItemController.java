@@ -56,7 +56,7 @@ public class ItemController {
 	public SysResult findItemDescById(@PathVariable Long itemId) {
 		System.out.println("findItemDescById()<<<");
 		try {
-			ItemDesc itemDesc = itemService.findItemById(itemId);
+			ItemDesc itemDesc = itemService.findItemDescById(itemId);
 			return SysResult.oK(itemDesc);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -113,5 +113,8 @@ public class ItemController {
 		}
 		return SysResult.build(201, "删除失败");
 	}
+	
+	
+	
 	
 }

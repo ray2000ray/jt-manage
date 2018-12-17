@@ -14,13 +14,36 @@ import com.jt.manage.service.UserService;
 public class UserServiceImpl implements UserService{
 
 	@Autowired
-	private UserMapper dao;
+	private UserMapper userMapper;
 	
 	@Override
 	@Transactional(readOnly=true) //查询必须加上
 	public List<User> findAll() {
 		// TODO Auto-generated method stub
-		return dao.findAll();
+		return userMapper.findAll();
+	}
+	/**
+	 * 1.通过type类型确定用户校验的字段
+	 */
+	@Override
+	public Boolean findCheckUser(String param, Integer type) {
+		String column=null;
+		
+		switch(type) {
+		case 1:
+			column = "username"; break;
+		
+		case 2:
+			column = "phone"; break;
+			
+		case 3:
+			column = "email"; break;
+		}
+		
+		int count = userMapper.findCheckUser(param, column);
+
+		//
+		return count==0?false:true;
 	}
 
 }

@@ -20,7 +20,10 @@ public interface ItemService {
 
 	public void deleteItems(Long[] ids);
 
-	public ItemDesc findItemById(Long itemId);
+	public ItemDesc findItemDescById(Long itemId);
+	
+	public Item findItemById(Long itemId);
+	
 
 
 	

@@ -7,5 +7,7 @@ import com.jt.manage.pojo.User;
 public interface UserService {
 
 	List<User> findAll();
+
+	Boolean findCheckUser(String param, Integer type);
 	
 }
